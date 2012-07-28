@@ -1,0 +1,126 @@
+<html>
+<head>
+  <title>Media API: Exercise 4 - update video</title>
+		<style type="text/css">
+			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8;}
+			legend {
+				color: #CF0050;
+			}
+		</style>
+		<!-- Javascript Media API wrapper from opensource.brightcove.com -->
+		<script type="text/javascript" src="http://files.brightcove.com/bc-mapi.js"></script>
+		
+</head>
+
+<body>
+  <!-- Read method script -->
+  		<script type="text/javascript">
+			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
+			// namespace to keep all the "global" vars together
+			var BCL = {};
+			BCMAPI.token = "WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..";
+			BCMAPI.callback = "BCL.onSearchResponse";
+//			BCL.url = "http://api.brightcove.com/services/library";
+//			BCL.command = "search_videos";
+			BCL.params = {};
+//			BCL.srcValue = "";
+			BCMAPI.search(BCL.params);
+			BCL.onSearchResponse = function(jsonData) {
+				  console.log(jsonData);
+				  var html = "<select id='videolist' onChange='BCL.onVideoSelect(this.options.selectedIndex)'>";
+					var video;
+					BCL.items = jsonData.items;
+				  for (var i in BCL.items) {
+				    video = BCL.items[i];
+				    html += "<option value='" + video.id + "'>" + video.name + "</option>";
+				  }
+				  document.getElementById("videoSelector").innerHTML = html;
+				  // populate the form
+				  BCL.onVideoSelect(0);
+			}
+			BCL.onVideoSelect = function(index) {
+				var video = BCL.items[index];
+				document.getElementById("id").value = video.id;
+				document.getElementById("shortDescription").value = video.shortDescription;
+				document.getElementById("name").value = video.name;
+
+			}
+
+		</script>
+
+  <!-- Write method script -->
+  <script type="text/javascript">
+
+	  function doUpdateVideo(){
+	       form = document.getElementById("update_video_sample");
+	       buildJSONRequest();
+	       form.action = document.getElementById("yourAPILocation").value;
+	       form.submit();
+	  }
+
+
+	  function buildJSONRequest(){
+	       if(document.getElementById('shortDescription').value ==""){
+	               alert("Please enter a short description");
+	               return;
+	       }
+	       else{
+	               json = document.getElementById('JSONView');
+	               //Construct the JSON request:
+	               json.value = '{"method": "update_video", "params":{"video": { "id" : ' + document.getElementById("id").value + ',  "shortDescription": "' + document.getElementById("shortDescription").value + '"} ,"token": "'+ document.getElementById("yourWriteToken").value + '"}}';
+	       }
+	  }
+  </script>
+
+  <div style="font-weight:bold;font-size:24">
+    Media API Exercise: Update a Video
+  </div>
+  <p>Select the video to update</p>
+  <div id="videoSelector"></div>
+	<br/><br/>
+  <table>
+    <tr>
+      <td style="width:30%">API Location:</td>
+
+      <td><input id="yourAPILocation" value="http://api.brightcove.com/services/post" size="45"></td>
+    </tr>
+
+    <tr>
+      <td style="width:30%">Write Token:</td>
+
+      <td><input id="yourWriteToken" value="Jyiei-T0_tDMwct8bUns819VTkfvkt9iX2mnIfkc8GNnREmW2YTG6A.." size="45"></td>
+    </tr>
+
+    <tr>
+      <td style="width:30%">Video ID (read-only):</td>
+
+      <td style="width:100%"><input id="id" type="text" readonly="true" value=""></td>
+    </tr>
+    <tr>
+      <td style="width:30%">Video Name (read-only):</td>
+
+      <td style="width:100%"><input id="name" type="text" readonly="true" value=""></td>
+    </tr>
+
+    <tr>
+      <td>Short Description</td>
+
+      <td><input id="shortDescription" type="text" size="100" maxlength="250"></td>
+    </tr>
+  </table><br>
+  <button onclick="doUpdateVideo()">Update Video</button>
+	<!-- Note the form attributes! -->
+  <form id="update_video_sample" method="post" enctype="multipart/form-data" target="postFrame" name="update_video_sample">
+    <br>
+
+    <fieldset>
+      <legend>JSON Request</legend> <input name="JSONView" id="JSONView" style="width:100%;border:none">
+    </fieldset><br>
+  </form><br>
+  <br>
+
+  <fieldset>
+    <legend>Response:</legend> <iframe id="postFrame" name="postFrame" style="width:100%;border:none"></iframe>
+  </fieldset><br>
+</body>
+</html>
