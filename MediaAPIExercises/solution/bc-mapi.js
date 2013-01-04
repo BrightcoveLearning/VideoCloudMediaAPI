@@ -1,5 +1,5 @@
 /**
- * Brightcove JavaScript MAPI Wrapper 1.2 (16 FEBRUARY 2011)
+ * Brightcove JavaScript MAPI Wrapper 1.3 (8 November 2012)
  * (Formerly known as Kudos)
  *
  * REFERENCES:
@@ -40,6 +40,7 @@ var BCMAPI = new function () {
 	this.token = "";
 	this.callback = "BCMAPI.flush";
 	this.url = "http://api.brightcove.com/services/library";
+	this.request = this.url;
 	this.calls = [
 		{ "command" : "find_all_videos", "def" : false },
 		{ "command" : "find_video_by_id", "def" : "video_id" },
@@ -73,7 +74,8 @@ var BCMAPI = new function () {
 	 */
 	this.inject = function (pQuery) {
 		var pElement = document.createElement("script");
-		pElement.setAttribute("src", this.url + "?" + pQuery);
+		this.request =  this.url + "?" + pQuery;
+		pElement.setAttribute("src", this.request);
 		pElement.setAttribute("type", "text/javascript");
 		document.getElementsByTagName("head")[0].appendChild(pElement);
 		
@@ -113,11 +115,20 @@ var BCMAPI = new function () {
 
 		if ((typeof pParams == "object") && pParams) {
 			for (var pParam in pParams) {
-				if (pParam == "selector") {
-					pQuery += "&" + pDefault + "=" + encodeURIComponent(pParams[pParam]);
-				} else {
-					pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);
-				}
+  			if (pParam == "any" || pParam == "all" || pParam == "none") {
+    			if (this.isArray(pParams[pParam])) {
+      			for (var idx in pParams[pParam]) {
+        			pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam][idx]);
+      			} 
+    			} else {
+            pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);        			
+          }
+  			}
+				if (pParam == "selector" && pParam !== "all") {    				
+    					pQuery += "&" + pDefault + "=" + encodeURIComponent(pParams[pParam]);
+    				} else {
+    					pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);
+    				}
 			}
 
 			if (typeof pParams.callback != "string") {
@@ -149,6 +160,16 @@ var BCMAPI = new function () {
 	this.search = function (pParams) {
 		return this.find("search_videos", pParams);
 	};
+	
+	/**
+	 * Determines if param member is an array
+	 * @since 1.1
+	 * @param mixed [o] The param member
+	 * @return boolean
+	 */
+	 this.isArray = function(o) {
+	   return Object.prototype.toString.call(o) === '[object Array]';
+	 }
 
 	/**
 	 * Default callback which does nothing
