@@ -26,11 +26,11 @@
 			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
 			// namespace to keep all the "global" vars together
 			var BCL = {};
-			BCL.htmlTemplate = "<ul>{{#items}}<li>{{name}}</li>{{/items}}</ul>"
+			BCL.htmlTemplate = "<ul>{{#items}}<li>{{name}}<br />{{shortDescription}}</li>{{/items}}</ul>"
 			BCMAPI.token = "WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..";
 			BCMAPI.callback = "BCL.onSearchResponse";
 			BCL.params = {};
-			BCL.params.any = "tag:sea";
+			BCL.params.any = ["tag:sea","tag:fish"];
 			BCL.params.video_fields = "id,name,shortDescription";
 			BCMAPI.search(BCL.params);
 			BCL.onSearchResponse = function(jsonData) {
