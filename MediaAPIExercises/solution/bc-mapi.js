@@ -9,6 +9,7 @@
  * AUTHORS:
  *	 Brian Franklin <bfranklin@brightcove.com>
  *	 Matthew Congrove <mcongrove@brightcove.com>
+ *   Robert Crooks <rcrooks@brightcove.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -16,11 +17,11 @@
  * the rights to use, copy, modify, alter, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to
  * whom the Software is furnished to do so, subject to the following conditions:
- *   
+ *
  * 1. The permission granted herein does not extend to commercial use of
  * the Software by entities primarily engaged in providing online video and
  * related services.
- *  
+ *
  * 2. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, SUITABILITY, TITLE,
@@ -29,7 +30,7 @@
  * CLAIM, DAMAGES OR OTHER LIABILITY WHATSOEVER, WHETHER IN AN ACTION OF
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE, INABILITY TO USE, OR OTHER DEALINGS IN THE SOFTWARE.
- *  
+ *
  * 3. NONE OF THE AUTHORS, CONTRIBUTORS, NOR BRIGHTCOVE SHALL BE RESPONSIBLE
  * IN ANY MANNER FOR USE OF THE SOFTWARE.  THE SOFTWARE IS PROVIDED FOR YOUR
  * CONVENIENCE AND ANY USE IS SOLELY AT YOUR OWN RISK.  NO MAINTENANCE AND/OR
@@ -78,7 +79,7 @@ var BCMAPI = new function () {
 		pElement.setAttribute("src", this.request);
 		pElement.setAttribute("type", "text/javascript");
 		document.getElementsByTagName("head")[0].appendChild(pElement);
-		
+
 		return true;
 	};
 
@@ -99,14 +100,14 @@ var BCMAPI = new function () {
 			if (typeof this.calls[pCall].command == "undefined") {
 				continue;
 			}
-			
+
 			if (pCommand == this.calls[pCall].command.toLowerCase().replace(/(find_)|(_)|(get_)/g, "")) {
 				pCommand = this.calls[pCall].command;
-				
+
 				if (typeof this.calls[pCall].def != "undefined") {
 					pDefault = this.calls[pCall].def;
 				}
-				
+
 				break;
 			}
 		}
@@ -119,12 +120,12 @@ var BCMAPI = new function () {
     			if (this.isArray(pParams[pParam])) {
       			for (var idx in pParams[pParam]) {
         			pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam][idx]);
-      			} 
+      			}
     			} else {
-            pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);        			
+            pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);
           }
   			}
-				if (pParam == "selector" && pParam !== "all") {    				
+				if (pParam == "selector" && pParam !== "all") {
     					pQuery += "&" + pDefault + "=" + encodeURIComponent(pParams[pParam]);
     				} else {
     					pQuery += "&" + pParam + "=" + encodeURIComponent(pParams[pParam]);
@@ -160,7 +161,7 @@ var BCMAPI = new function () {
 	this.search = function (pParams) {
 		return this.find("search_videos", pParams);
 	};
-	
+
 	/**
 	 * Determines if param member is an array
 	 * @since 1.1
