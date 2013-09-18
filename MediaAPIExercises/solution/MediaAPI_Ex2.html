@@ -45,12 +45,11 @@
 			<div id="results"></div>
     </fieldset><br>
 		<!-- Javascript Media API wrapper from opensource.brightcove.com -->
-		<script type="text/javascript" src="http://files.brightcove.com/bc-mapi.js"></script>
+		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
 				<!-- include handlebars.js templating system  -->
-		<script type="text/javascript" src="http://files.brightcove.com/handlebars-1.0.0.beta.6.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 
 		<script type="text/javascript">
-			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
 			// namespace to keep all the "global" vars together
 			var BCL = {};
 			BCL.htmlTemplate = "{{#items}}<a onclick=\"BCL.playVideo({{id}})\"><img src=\"{{thumbnailURL}}\"/>{{name}}</a><br/>{{/items}}";
@@ -59,9 +58,9 @@
 			BCL.params = {};
 			BCL.onSearchResponse = function(jsonData) {
 				console.log(jsonData);
-        var template = Handlebars.compile(BCL.htmlTemplate);
-        var data = jsonData;
-        var results = template(data);
+                var template = Handlebars.compile(BCL.htmlTemplate);
+                var data = jsonData;
+                var results = template(data);
         document.getElementById("results").innerHTML = results;
 			}
 			// search for videos
@@ -69,7 +68,7 @@
 				var searchTerm = document.getElementById("searchTerm").value;
 				console.log("search term: "+searchTerm);
 				if (searchTerm != "") {
-						BCL.params.any = "tag:"+searchTerm;
+					BCL.params.any = "tag:"+searchTerm;
 				}
 				console.log(BCL.params.any.length);
 				BCMAPI.search(BCL.params);
@@ -78,10 +77,10 @@
 			// Player API scripting
 			// event listener for the player being ready
 			BCL.onTemplateReady = function (event) {
-			  console.log("onTemplateReady");
-			  BCL.player = brightcove.api.getExperience("myExperience");
-			  // get a reference to the video player
-			  BCL.videoPlayer = BCL.player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
+                console.log("onTemplateReady");
+                BCL.player = brightcove.api.getExperience("myExperience");
+                // get a reference to the video player
+                BCL.videoPlayer = BCL.player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
 			}
 			// play video function
 			BCL.playVideo = function(videoID) {
