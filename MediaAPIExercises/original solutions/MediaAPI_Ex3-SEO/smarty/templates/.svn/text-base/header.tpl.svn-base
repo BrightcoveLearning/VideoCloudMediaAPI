@@ -1,0 +1,50 @@
+{literal}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Media API Exercise</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<style type="text/css">
+			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8;}
+			legend {
+				color: #CF0050;
+			}
+			table {font-size: 10px;
+			}
+			.player {
+			   height: 310px;
+			}
+			#playlist {
+				 border: 1px solid #666;
+				 overflow-y: scroll;
+				 height: 305px;
+			}
+			a {
+			   cursor: pointer;
+			}
+			.playlist {
+			   border: 1px solid #CCC;
+			   padding: 2px;
+			}
+			img.thumbnail {
+			   float:left;
+			   clear:left;
+			   margin-right: 5px;
+			}
+			.description {
+			   height: 40px;
+			}
+/*
+			.title {
+			   color: #F4901E;
+			   font-size: 12px;
+			}
+*/
+		</style>
+		<!-- Javascript Media API wrapper from opensource.brightcove.com -->
+		<script type="text/javascript" src="http://files.brightcove.com/bc-mapi.js"></script>
+		
+	</head>
+	<body>
+		<h2>Media API Training</h2>	
+{/literal}

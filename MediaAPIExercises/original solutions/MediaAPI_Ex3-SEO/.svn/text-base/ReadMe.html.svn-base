@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />		
+    <title>Running the SEO Examples</title>
+    <style type="text/css">
+    body {
+      width: 900px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    pre {
+      background-color: #E7E7E7;
+      padding: 5px;
+    }
+    </style>
+  </head>
+  <body>
+    <img src="http://img.brightcove.com/bc-training-logo.png"/>
+    <h1>SEO Examples Using PHP</h1>
+    <p>These examples use PHP and the Video Cloud Media API to enhance SEO by writing video metadata into the page, and by generating a video sitemap. You should be able to adapt these examples easily to other server-side languages using the Media API wrappers found on <a href="http://opensource.brightcove.com">opensource.brightcove.com</a></p>
+    <h2>Setup</h2>
+    <p>￼To run these SEO sample files:</p>
+    <ol>
+      <li>You must have PHP installed and enabled</li>
+        <ul>
+          <li>on Macs, PHP is installed automatically, but you may need to enable it:</li>
+            <ul>
+              <li>Display hidden files via command line or tool like <a href="http://allmaconline.com/desktop-utility-for-mac/">Desktop Utility</a> (the command is: <code>defaults write com.apple.Finder AppleShowAllFiles YES</code> -- and you will need to relaunch Finder after entering this)</li>
+              <li>Edit your /etc/apache2/httpd.conf and make find the line:<br/><code>#LoadModule php5_module libexec/apache2/libphp5.so</code></li>
+              <li>Delete the <strong>#</strong> symbol and save the file</li>
+              <li>Start or re-start your local web server: go to System Preferences-&gt;Sharing, and check (or uncheck and recheck) the box beside Web Sharing</li>
+            </ul>
+          <li>On Windows, the easiest route is to bypass IIS (the Microsoft web server) and install an Apache distribution instead - <a href="http://www.apachefriends.org/en/xampp.html">xampp</a> is easy to install and use, and has PHP built in.</li>
+        </ul>
+      <li>The contents of the zip file need to be copied somewhere under you web server document root. If you're on a Mac using the built-in Apache server, this would your ~[username]/Sites folder. If you're using something else, check the web server documentation.</li>
+      <li>Note that the samples rely on the <a href="http://opensource.brightcove.com/project/PHP-MAPI-Wrapper/">opensource PHP wrapper for the Media API</a> and the <a href="http://www.smarty.net/">Smarty templating system for PHP</a>. For convenience, I've bundled these with sample files, so you don't need to download or install anything. If you want to use these tools more generally, visit the respective sites for instructions.</li>
+      <li>Now you need to set some permissions to allow the samples to work properly. On Mac/Unix/Linux, use a Terminal - to get the paths, drag the file/folder from Finder to Terminal when you reach the appropriate point on the command line. On Windows, right-click on the appropriate folders/files choose security to grant permissions to all users.</li>
+        <ul>
+          <li>For the seo/smarty/template_c folder: <code>chmod 755 <em>[path-to-folder]</em></code></li>
+          <li>For the seo/smarty/cache folder: <code>chmod 755 <em>[path-to-folder]</em></code></li>
+          <li>for the seo/sitemap.xml file: <code>chmod 777 <em>[path to folder]</em></code></li>
+        </ul>
+      <li>You should now be able to run the examples by browsing to /seo/seo-playlist-in-page.php and /seo/seo_videositemap.php on your local web server - the URL will begin with http://[your network IP address]/ or http://localhost/ - for example:<br/><code>http://10.0.1.13/~rcrooks1969/SupportSite/seo/seo_videositemap.php</code></li>
+    </ol>
+    <p>If you got things set up correctly, the output when you view the pages should look like this:</p>
+    <p style="margin-left:100px;color:#F4901F;"><small><strong>seo-playlist-in-page.php:</strong></small></p>
+    <img src="readmeImages/playlist-in-pageResults.png" alt="playlist-in-pageResults" width="827" height="406" />
+    <p style="margin-left:100px; color:#F4901F;"><small><strong>seo_videositemap.php:</strong></small></p>
+    <img border="1" src="readmeImages/videoSitemapResults.png" alt="videoSitemapResults" width="257" height="80" />
+    <h2>How the samples work</h2>
+    <p>Both samples use similar high-level logic:</p>
+    <ol>
+      <li>Use a Media API call (via the BCMAPI wrapper) to retrieve a array of video data transfer objects (DTOs)</li>
+      <li>Loop over the array (via the Smarty templating system) to insert data into HTML or XML code</li>
+    </ol>
+    <h3>seo-playlist-in-page.php</h3>
+    <p>This example uses the Media_API <code>search_videos</code> method to return a set of videos. You could use other methods to return videos or specific playlists if you prefer.</p>
+    <pre>
+&lt;?php
+
+// This code example uses the PHP Media API wrapper
+// For the PHP Media API wrapper, visit opensource.brightcove.com
+
+// Include the BCMAPI SDK
+require('bc-mapi.php');
+// Include the Smarty templating system
+// for more info: http://www.smarty.net/
+require('Smarty-3.1.8/libs/Smarty.class.php');
+// instantiate smarty
+$smarty = new smarty();
+// set smarty directories
+$smarty->setTemplateDir('smarty/templates/');
+$smarty->setCompileDir('smarty/templates_c/');
+$smarty->setCacheDir('smarty/cache/');
+$smarty->setConfigDir('smarty/configs/');
+
+// Instantiate the class, passing it our Brightcove API tokens (read, then write)
+$bc = new BCMAPI(
+  'WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..',
+  'Jyiei-T0_tDMwct8bUns819VTkfvkt9iX2mnIfkc8GNnREmW2YTG6A..'
+);
+// Define our parameters
+$params = array(
+  'video_fields' => 'id,name,shortDescription,thumbnailURL'
+);
+// Set our search terms
+$terms = array(
+  'all' => 'tag:mapi_ex3',
+);
+// Make our API call
+$videos = $bc->search('video', $terms, $params);
+    </pre>
+    <p>Once the videos are returned, the array of video DTOs is assigned to Smarty, which then inject the data into the template defined in /smarty/templates/seo_playlist.tpl:</p>
+    <h4>Smarty actions</h4>
+    <pre>
+  $smarty->assign('videos' , $videos);
+  // display the template populated with data
+  $smarty->display('seo_playlist.tpl');
+    </pre>
+    <h4>The template code</h4>
+    <pre>
+{include file=&quot;header.tpl&quot;}
+
+    &lt;h3&gt;SEO Example&lt;/h3&gt;
+    &lt;table class=&quot;player&quot; cellpadding=&quot;2&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td valign=&quot;top&quot;&gt;
+            &lt;!-- Start of Brightcove Player --&gt;
+        
+            &lt;div style=&quot;display:none&quot;&gt;
+            
+            &lt;/div&gt;
+            
+            &lt;!--
+            By use of this code snippet, I agree to the Brightcove Publisher T and C 
+            found at https://accounts.brightcove.com/en/terms-and-conditions/. 
+            --&gt;
+            
+            &lt;script language=&quot;JavaScript&quot; type=&quot;text/javascript&quot; src=&quot;http://admin.brightcove.com/js/BrightcoveExperiences.js&quot;&gt;&lt;/script&gt;
+            &lt;object id=&quot;myExperience&quot; class=&quot;BrightcoveExperience&quot;&gt;
+              &lt;param name=&quot;bgcolor&quot; value=&quot;#FFFFFF&quot; /&gt;
+              &lt;param name=&quot;width&quot; value=&quot;571&quot; /&gt;
+              &lt;param name=&quot;height&quot; value=&quot;305&quot; /&gt;
+              &lt;param name=&quot;playerID&quot; value=&quot;921267190001&quot; /&gt;
+              &lt;param name=&quot;playerKey&quot; value=&quot;AQ~~,AAAA1oy1bvE~,ALl2ezBj3WG3MLvDx9F9zkV06cNK00ey&quot; /&gt;
+              &lt;param name=&quot;isVid&quot; value=&quot;true&quot; /&gt;
+              &lt;param name=&quot;isUI&quot; value=&quot;true&quot; /&gt;
+              &lt;param name=&quot;dynamicStreaming&quot; value=&quot;true&quot; /&gt;
+              <strong>&lt;!-- params for Universal Player API --&gt;
+              &lt;param name=&quot;includeAPI&quot; value=&quot;true&quot; /&gt;
+              &lt;param name=&quot;templateReadyHandler&quot; value=&quot;BCL.onTemplateReady&quot; /&gt;</strong>
+              
+            &lt;/object&gt;
+            &lt;script type=&quot;text/javascript&quot;&gt;brightcove.createExperiences();&lt;/script&gt;
+            
+            &lt;!-- End of Brightcove Player --&gt; 
+          &lt;/td&gt;
+          &lt;td&gt;
+           &lt;div id=&quot;playlist&quot;&gt;
+
+{foreach $videos as $video}
+{strip}
+            &lt;div class=&quot;playlist&quot;&gt;&lt;a onclick=&quot;BCL.playVideo({$video-&gt;id})&quot;&gt;&lt;img class=&quot;thumbnail&quot; height=&quot;40&quot; width=&quot;75&quot; src=&quot;{$video-&gt;thumbnailURL}&quot;/&gt;&lt;div class=&quot;description&quot;&gt;&lt;span style=&quot;font-size:12px;&quot;&gt;{$video-&gt;name}&lt;/span&gt;&lt;br/&gt;{$video-&gt;shortDescription}&lt;/div&gt;&lt;/a&gt;&lt;/div&gt;
+{/strip}
+{/foreach}
+            &lt;/tbody&gt;&lt;/table&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;div id=&quot;playlistCollection&quot;&gt;&lt;/div&gt;
+{literal}
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      // namespace to keep all the &quot;global&quot; vars together
+      var BCL = {};
+      // Player API scripting
+      // event listener for the player being ready
+      BCL.onTemplateReady = function (event) {
+        BCL.player = brightcove.api.getExperience(&quot;myExperience&quot;);
+        // get a reference to the video player
+        BCL.videoPlayer = BCL.player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
+      }
+      // play video function
+      BCL.playVideo = function(videoID) {
+        BCL.videoPlayer.loadVideoByID(videoID);
+      }
+    &lt;/script&gt;
+{/literal}
+  &lt;/body&gt;
+&lt;/html&gt;    
+    </pre>
+<p>You will notice that the template includes Smart Player API processing to load the videos in the player when they are clicked. The included header template is all HTML, including CSS code to render the video list in a way that resembles a playlist in the player.</p>
+<h4>seo_videositemap.php</h4>
+<p>In this example, a simple search_videos call without search parameters is used to return all videos. The data is again passed to Smarty, to insert it into an XML template for a video sitemap:</p>
+<h4>PHP code</h4>
+<pre>
+&lt;?php
+
+  // This code example uses the PHP Media API wrapper
+  // For the PHP Media API wrapper, visit opensource.brightcove.com
+
+  // Include the BCMAPI SDK
+  require('bc-mapi.php'); 
+  // Include the Smarty templating system
+  // for more info: http://www.smarty.net/
+  require_once('Smarty-3.1.8/libs/Smarty.class.php');
+  // instantiate smarty
+  $smarty = new smarty();
+  // enable caching
+  $smarty-&gt;setCaching(true);
+  // set a separate cache_id for each unique URL
+  $cache_id = md5($_SERVER['REQUEST_URI']);
+
+  // set smarty directories
+  $smarty-&gt;setTemplateDir('smarty/templates/');
+  $smarty-&gt;setCompileDir('smarty/templates_c/');
+  $smarty-&gt;setCacheDir('smarty/cache/');
+  $smarty-&gt;setConfigDir('smarty/configs/');
+
+  // Instantiate the class, passing it our Brightcove API tokens (read, then write)
+  $bc = new BCMAPI(
+    'WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..',
+    'Jyiei-T0_tDMwct8bUns819VTkfvkt9iX2mnIfkc8GNnREmW2YTG6A..'
+  );
+  // Define our parameters
+  $params = array(
+    'video_fields' =&gt; 'id,name,shortDescription,thumbnailURL,tags,customFields,length'
+  );
+  // Set our search terms
+    $terms = array();
+  // Make our API call
+  $videos = $bc-&gt;search('video', $terms, $params);
+  echo('Data received from Video Cloud&lt;br/&gt;');
+  // assign the data to smarty
+  $smarty-&gt;assign('videos' , $videos);
+  // set the filename
+  $sitemapfile = 'sitemap.xml';
+  // generate the sitemap populated with data
+  $sitemap = $smarty-&gt;fetch('seo_sitemap.tpl', $cache_id);
+  echo('Bytes written to sitemap: ');
+  echo $filelength =  file_put_contents($sitemapfile, $sitemap);
+ echo('&lt;br/&gt;Sitemap created successfully');
+?&gt;
+</pre>
+<h4>Template code</h4>
+<pre>
+&lt;?php
+
+  // This code example uses the PHP Media API wrapper
+  // For the PHP Media API wrapper, visit opensource.brightcove.com
+
+  // Include the BCMAPI SDK
+  require('bc-mapi.php'); 
+  // Include the Smarty templating system
+  // for more info: http://www.smarty.net/
+  require_once('Smarty-3.1.8/libs/Smarty.class.php');
+  // instantiate smarty
+  $smarty = new smarty();
+  // enable caching
+  $smarty-&gt;setCaching(true);
+  // set a separate cache_id for each unique URL
+  $cache_id = md5($_SERVER['REQUEST_URI']);
+
+  // set smarty directories
+  $smarty-&gt;setTemplateDir('smarty/templates/');
+  $smarty-&gt;setCompileDir('smarty/templates_c/');
+  $smarty-&gt;setCacheDir('smarty/cache/');
+  $smarty-&gt;setConfigDir('smarty/configs/');
+
+  // Instantiate the class, passing it our Brightcove API tokens (read, then write)
+  $bc = new BCMAPI(
+    'WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..',
+    'Jyiei-T0_tDMwct8bUns819VTkfvkt9iX2mnIfkc8GNnREmW2YTG6A..'
+  );
+  // Define our parameters
+  $params = array(
+    'video_fields' =&gt; 'id,name,shortDescription,thumbnailURL,tags,customFields,length'
+  );
+  // Set our search terms
+    $terms = array();
+  // Make our API call
+  $videos = $bc-&gt;search('video', $terms, $params);
+  echo('Data received from Video Cloud&lt;br/&gt;');
+  // assign the data to smarty
+  $smarty-&gt;assign('videos' , $videos);
+  // set the filename
+  $sitemapfile = 'sitemap.xml';
+  // generate the sitemap populated with data
+  $sitemap = $smarty-&gt;fetch('seo_sitemap.tpl', $cache_id);
+  echo('Bytes written to sitemap: ');
+  echo $filelength =  file_put_contents($sitemapfile, $sitemap);
+ echo('&lt;br/&gt;Sitemap created successfully');
+?&gt;
+
+&lt;urlset xmlns=&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot; xmlns:video=&quot;http://www.google.com/schemas/sitemap-video/1.1&quot;&gt;
+&lt;!-- basic video site map - for more info and additional optional fields, see http://support.google.com/webmasters/bin/answer.py?hl=en&answer=80472 --&gt;
+{foreach $videos as $video}
+{strip}
+   &lt;url&gt; 
+     &lt;loc&gt;http://support.brightcove.com/en/training-videos&lt;/loc&gt;
+     &lt;video:video&gt;
+       &lt;video:thumbnail_loc&gt;{$video-&gt;thumbnailURL}&lt;/video:thumbnail_loc&gt; 
+       &lt;video:title&gt;{$video-&gt;name}&lt;/video:title&gt;
+       &lt;video:description&gt;{$video-&gt;shortDescription}&lt;/video:description&gt;
+       &lt;video:player_loc allow_embed=&quot;yes&quot; autoplay=&quot;ap=1&quot;&gt;{$video-&gt;customFields-&gt;pageurl}&lt;/video:player_loc&gt;
+       &lt;video:duration&gt;{$video-&gt;length / 1000}&lt;/video:duration&gt;
+       {foreach $video-&gt;tags as $tag}
+       &lt;video:tag&gt;{$tag}&lt;/video:tag&gt;
+       {/foreach}
+       &lt;video:category&gt;{$video-&gt;customFields-&gt;videotopic}&lt;/video:category&gt;
+       &lt;video:live&gt;no&lt;/video:live&gt;
+     &lt;/video:video&gt; 
+   &lt;/url&gt;
+{/strip}
+{/foreach}
+&lt;/urlset&gt;
+</pre>
+  </body>
+</html>

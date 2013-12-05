@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Media API Exercise 2</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+			body {margin : 20px;}
+		</style>
+    
+    <!-- **start of content added for Exercise 2 -->
+    <!-- Javascript Media API wrapper from opensource.brightcove.com -->
+		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
+    <!-- **end of content added for Exercise 2 -->
+    
+	</head>
+	<body>
+		<h2>Media API Search and Find with MAPI</h2>
+    
+		<script type="text/javascript">
+			
+			// **start of content added for Exercise 2
+			BCMAPI.token = "WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..";
+			BCMAPI.callback = "onSearchResponse";
+			var params = {};
+			params.page_size = 5;
+			BCMAPI.search(params);
+			//BCMAPI.find("find_all_playlists",params);
+			// **end of content added for Exercise 2
+			
+			var onSearchResponse = function(jsonData) {
+				console.log(jsonData);		
+			}
+		</script>
+    
+	</body>
+</html>
