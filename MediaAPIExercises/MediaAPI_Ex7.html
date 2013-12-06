@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Media API Exercise 7</title>
+		<title>Media API Exercise 6</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 			body {margin : 20px;}
@@ -10,7 +10,7 @@
 		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
 	</head>
 	<body>
-		<h2>Media API Paging</h2>
+		<h2>Media API Sort Fields</h2>
     
     <h3>Search Input</h3>
     <p>Read token (to retrieve list of videos: <input name="yourReadToken" id="yourReadToken" type="text" size="100" value="WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw.."></p>
@@ -19,6 +19,7 @@
     <p>Return videos that have <code>any</code> of these terms:<br /><input name="any" id="any" type="text" size="100" ></p>
     <p>Return videos that have <code>none</code> of these terms:<br /><input name="none" id="none" type="text" size="100" value="private"></p> 
     
+    <!-- **start of content added for Exercise 6 -->
     <p>Sort by:
       <select id="sortBy">
         <option value="DISPLAY_NAME">Display Name</option>
@@ -33,15 +34,7 @@
         <option value="DESC">Descending</option>
       </select>
     </p>
-    
-    <!-- **start of content added for Exercise 7 -->
-    <p>Page size: <input name="pageSize" id="pageSize" type="text" size="10" value="10">
-    &nbsp; Page number:
-      <select id="pageNumber">
-        <option>0</option>
-      </select>
-    </p>
-    <!-- **end of content added for Exercise 7 -->
+    <!-- **end of content added for Exercise 6 -->
     
     <p><button onclick="doSearchVideos()">Search for Videos</button></p>
     <br/>
@@ -62,15 +55,12 @@
     
 		<!-- This is the script to modify for the exercise -->
 		<script type="text/javascript">
-			// **start of content added for Exercise 7
-			var pageNumber;
-			// **end of content added for Exercise 7
-			
 			var doSearchVideos = function() {
 				BCMAPI.token = document.getElementById("yourReadToken").value;
 				BCMAPI.callback = "BCL.onSearchResponse";
 				BCMAPI.callback = "onSearchResponse";
 				var params = {};
+				params.page_size = 10;
 				params.video_fields = "id,name,shortDescription";
 				
 				if (document.getElementById("all").value !== "") {
@@ -84,17 +74,11 @@
 				}
 				params.get_item_count = true;
 				
+				// **start of content added for Exercise 6
 				var sortBy = document.getElementById("sortBy");
       	var sortByOrder = document.getElementById("sortByOrder");
 				params.sort_by = sortBy.options[sortBy.selectedIndex].value + ":" + sortByOrder.options[sortByOrder.selectedIndex].value;
-				
-				// **start of content added for Exercise 7
-				if (document.getElementById("pageSize").value !== "") {
-          params.page_size = document.getElementById("pageSize").value;
-        }
-				pageNumber = document.getElementById("pageNumber");
-				params.page_number = pageNumber.options[pageNumber.selectedIndex].value;
-				// **end of content added for Exercise 7
+				// **end of content added for Exercise 6
 				
 				BCMAPI.search(params);
 			}
@@ -114,19 +98,6 @@
         document.getElementById("jsonRequest1").innerHTML = BCMAPI.request;
 				// output response 
 				document.getElementById("jsonResponse").innerHTML = JSON.stringify(jsonData,null,2);
-				
-				// **start of content added for Exercise 7
-				var numberOfPages = Math.ceil(jsonData.total_count/jsonData.page_size);
-				// add page option elements for each page in returned data
-				for (var i = 1; i < numberOfPages; i++) {
-					if (!pageNumber[i]) {
-						var option = document.createElement("option");
-						option.text = i;
-						pageNumber.add(option,null);
-					}
-				}
-				// **end of content added for Exercise 7
-				
 			}
 		</script>
     
