@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Media API Exercise 6</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+			body {margin : 20px;}
+		</style>
+    <!-- Javascript Media API wrapper from opensource.brightcove.com -->
+		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
+	</head>
+	<body>
+		<h2>Media API Sort Fields</h2>
+    
+    <h3>Search Input</h3>
+    <p>Read token (to retrieve list of videos: <input name="yourReadToken" id="yourReadToken" type="text" size="100" value="WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw.."></p>
+    <p>API Location: <input id="yourAPILocation" value="//api.brightcove.com/services/post" /></p>
+    <p>Return videos that have <code>all</code> of these terms:<br /><input name="all" id="all" type="text" size="100" ></p>
+    <p>Return videos that have <code>any</code> of these terms:<br /><input name="any" id="any" type="text" size="100" ></p>
+    <p>Return videos that have <code>none</code> of these terms:<br /><input name="none" id="none" type="text" size="100" value="private"></p> 
+    
+    <!-- **start of content added for Exercise 6 -->
+    <p>Sort by:
+      <select id="sortBy">
+        <option value="DISPLAY_NAME">Display Name</option>
+        <option value="PUBLISH_DATE">Date Published</option>
+        <option value="CREATION_DATE">Date Created</option>
+        <option value="MODIFIED_DATE">Date Last Modified</option>
+        <option value="PLAYS_TRAILING_WEEK">Trailing Week Plays</option>
+        <option value="PLAYS_TOTAL">All-Time Plays</option>
+      </select>
+      <select id="sortByOrder">
+        <option value="ASC">Ascending</option>
+        <option value="DESC">Descending</option>
+      </select>
+    </p>
+    <!-- **end of content added for Exercise 6 -->
+    
+    <p><button onclick="doSearchVideos()">Search for Videos</button></p>
+    <br/>
+    
+    <p>Video to update:
+      <select id="videoList" style="font-size:medium; width:200px" >
+          <option>none</option>
+        </select>
+    </p>
+    
+    <h3>Media API Response</h3>
+    <p>Below is the request sent to the Media API service to retrieve videos:</p>
+    <pre><code id="jsonRequest1"></code></pre>
+    <p>Below is the response from the Media API request:</p>
+    <pre><code id="jsonResponse"></code></pre>
+    
+    
+    
+		<!-- This is the script to modify for the exercise -->
+		<script type="text/javascript">
+			var doSearchVideos = function() {
+				BCMAPI.token = document.getElementById("yourReadToken").value;
+				BCMAPI.callback = "BCL.onSearchResponse";
+				BCMAPI.callback = "onSearchResponse";
+				var params = {};
+				params.page_size = 10;
+				params.video_fields = "id,name,shortDescription";
+				
+				if (document.getElementById("all").value !== "") {
+					params.all = document.getElementById("all").value.split(",");
+				}
+				if (document.getElementById("any").value !== "") {
+					params.any = document.getElementById("any").value.split(",");
+				}
+				if (document.getElementById("none").value !== "") {
+					params.none = document.getElementById("none").value.split(",");
+				}
+				params.get_item_count = true;
+				
+				// **start of content added for Exercise 6
+				var sortBy = document.getElementById("sortBy");
+      	var sortByOrder = document.getElementById("sortByOrder");
+				params.sort_by = sortBy.options[sortBy.selectedIndex].value + ":" + sortByOrder.options[sortByOrder.selectedIndex].value;
+				// **end of content added for Exercise 6
+				
+				BCMAPI.search(params);
+			}
+			
+			var onSearchResponse = function(jsonData) {
+				console.log(jsonData);		
+				// create the video list and format in HTML
+				var str = "";
+				for (var i in jsonData.items) {
+					// format the video drop-down menu items
+					str += "<option value='"+ jsonData.items[i].id +
+					"' >" + jsonData.items[i].name + "</option>";
+				}
+				// inject the video list into the video drop-down menu
+				document.getElementById("videoList").innerHTML = str;
+				// output request 
+        document.getElementById("jsonRequest1").innerHTML = BCMAPI.request;
+				// output response 
+				document.getElementById("jsonResponse").innerHTML = JSON.stringify(jsonData,null,2);
+			}
+		</script>
+    
+	</body>
+</html>
