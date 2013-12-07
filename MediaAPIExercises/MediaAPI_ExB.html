@@ -1,12 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
+<<<<<<< HEAD
 <head>
   <title>Media API: Exercise B</title>
+=======
+	<head>
+		<title>Media API Exercise</title>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 		<style type="text/css">
-			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8;}
+			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8; width: 900px;}
 			legend {
 				color: #CF0050;
 			}
+			.playerBlock { float: left; width: 480px; margin-right: 10px; margin-top: 10px;}
 		</style>
+<<<<<<< HEAD
 
 </head>
 
@@ -14,75 +23,87 @@
 	<h2>Update a Video using a Server-Side Media API Call</h2>
   
     <!-- Javascript Media API wrapper from opensource.brightcove.com -->
+=======
+	</head>
+	<body>
+		<h2>Media API Training</h2>
+    <div class="playerBlock">
+    
+  		<!-- Start of Brightcove Player -->
+  		<script language="JavaScript" type="text/javascript" src="http://admin.brightcove.com/js/BrightcoveExperiences.js"></script>
+  		<object id="myExperience" class="BrightcoveExperience">
+  		  <param name="bgcolor" value="#FFFFFF" />
+  		  <param name="width" value="480" />
+  		  <param name="height" value="270" />
+  		  <param name="playerID" value="921267190001" />
+  		  <param name="playerKey" value="AQ~~,AAAA1oy1bvE~,ALl2ezBj3WG3MLvDx9F9zkV06cNK00ey" />
+  		  <param name="isVid" value="true" />
+  		  <param name="isUI" value="true" />
+  		  <param name="dynamicStreaming" value="true" />
+  		  <!-- params for Universal Player API -->
+  		  <param name="includeAPI" value="true" />
+  		  <param name="templateReadyHandler" value="BCL.onTemplateReady" />
+  		</object>
+  		<script type="text/javascript">brightcove.createExperiences();</script>
+  		<!-- End of Brightcove Player -->
+      
+  		<div id="search">
+  		<p>Enter keywords to search for videos, using commas to separate multiple terms -- hint: try "sea," "bird," or "wildlife."</p>
+  		<p>
+  			<input type="text" id="searchTerm" size="30"/>
+  			<br/>
+  			<input type="button" value="Submit"  onclick="BCL.searchForVideos()" />
+  		</p>
+  		</div>
+    </div>
+    <fieldset>
+      <legend>Results</legend>
+			<div id="results"></div>
+    </fieldset><br>
+		<!-- Javascript Media API wrapper from opensource.brightcove.com -->
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
-				<!-- include handlebars.js templating system  -->
+		<!-- include handlebars.js templating system  -->
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 
-  <!-- Read method script -->
-  		<script type="text/javascript">
-			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
+		<script type="text/javascript">
 			// namespace to keep all the "global" vars together
 			var BCL = {};
-			BCL.htmlTemplate = "<select id=\"videolist\" onChange=\"BCL.onVideoSelect(this.options.selectedIndex)\">{{#items}}<option value=\"{{id}}\">{{name}}</option>{{/items}}</select>";
+			BCL.htmlTemplate = "{{#items}}<a onclick=\"BCL.playVideo({{id}})\"><img src=\"{{thumbnailURL}}\"/>{{name}}</a><br/>{{/items}}";
 			BCMAPI.token = "WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..";
 			BCMAPI.callback = "BCL.onSearchResponse";
 			BCL.params = {};
-			BCMAPI.search(BCL.params);
 			
-      // search response handler
 			BCL.onSearchResponse = function(jsonData) {
-			  console.log(jsonData);
-			  BCL.items = jsonData.items;
-        // populate the form
+				console.log(jsonData);
 				var template = Handlebars.compile(BCL.htmlTemplate);
 				var data = jsonData;
-        var results = template(data);
-				document.getElementById("videoSelector").innerHTML = results;
-			  BCL.onVideoSelect(0);
+				var results = template(data);
+        document.getElementById("results").innerHTML = results;
 			}
-			
-			// handler for video select
-			BCL.onVideoSelect = function(index) {
-				var video = BCL.items[index];
-				document.getElementById("id").value = video.id;
-				document.getElementById("shortDescription").value = video.shortDescription;
-				document.getElementById("name").value = video.name;
+			// search for videos
+			BCL.searchForVideos = function() {
+				var searchTerm = document.getElementById("searchTerm").value;
+				console.log("search term: "+searchTerm);
+				if (searchTerm != "") {
+					BCL.params.any = "tag:"+searchTerm;
+				}
+				console.log(BCL.params.any.length);
+				BCMAPI.search(BCL.params);
+			}
+
+			// Player API scripting
+			// event listener for the player being ready
+			BCL.onTemplateReady = function (event) {
+				console.log("onTemplateReady");
+				BCL.player = brightcove.api.getExperience("myExperience");
+				// get a reference to the video player
+				BCL.videoPlayer = BCL.player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
+			}
+			// play video function
+			BCL.playVideo = function(videoID) {
+				BCL.videoPlayer.loadVideoByID(videoID);
 			}
 		</script>
-
-  <!-- Write method script -->
-
-  <div style="font-weight:bold;font-size:24">
-    Media API Exercise: Update a Video
-  </div>
-  <p>Select the video to update</p>
-  <p><em>Note that Media API read methods are cached, so you will not see the changed properties reflected in the form for 5 minutes or more.</em></p>
-  <div id="videoSelector"></div>
-	<br/><br/>
-  <form action="MediaAPI_Ex10B_action.php" method="post" enctype="multipart/form-data" target="postFrame">
-   <table>
-    <tr>
-      <td style="width:30%">Video ID (read-only):</td>
-
-      <td style="width:100%"><input name="id" id="id" type="text" readonly="true" value=""></td>
-    </tr>
-    <tr>
-      <td style="width:30%">Video Name:</td>
-
-      <td style="width:100%"><input name="name" id="name" type="text" value=""></td>
-    </tr>
-
-    <tr>
-      <td>Short Description</td>
-
-      <td><input name="shortDescription" id="shortDescription" type="text" size="100" maxlength="250"></td>
-    </tr>
-  </table><br>
-  <button type="submit" value="Update Video">Update Video</button>
-  </form><br>
-    <fieldset>
-    <legend>Response:</legend> <iframe id="postFrame" name="postFrame" style="width:100%;border:none"></iframe>
-  </fieldset><br>
-
-</body>
+	</body>
 </html>

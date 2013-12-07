@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Media API Exercise 8</title>
+		<title>Media API Exercise 7</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 			body {margin : 20px;}
@@ -34,14 +34,22 @@
       </select>
     </p>
     
+<<<<<<< HEAD
     <!-- **start of content added for Exercise 8 -->
+=======
+    <!-- **start of content added for Exercise 7 -->
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
     <p>Page size: <input name="pageSize" id="pageSize" type="text" size="10" value="10">
     &nbsp; Page number:
       <select id="pageNumber">
         <option>0</option>
       </select>
     </p>
+<<<<<<< HEAD
     <!-- **end of content added for Exercise 8 -->
+=======
+    <!-- **end of content added for Exercise 7 -->
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
     
     <p><button onclick="doSearchVideos()">Search for Videos</button></p>
     <br/>
@@ -62,9 +70,15 @@
     
 		<!-- This is the script to modify for the exercise -->
 		<script type="text/javascript">
+<<<<<<< HEAD
 			// **start of content added for Exercise 8
 			var pageNumber;
 			// **end of content added for Exercise 8
+=======
+			// **start of content added for Exercise 7
+			var pageNumber;
+			// **end of content added for Exercise 7
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 			
 			var doSearchVideos = function() {
 				BCMAPI.token = document.getElementById("yourReadToken").value;
@@ -88,13 +102,21 @@
       	var sortByOrder = document.getElementById("sortByOrder");
 				params.sort_by = sortBy.options[sortBy.selectedIndex].value + ":" + sortByOrder.options[sortByOrder.selectedIndex].value;
 				
+<<<<<<< HEAD
 				// **start of content added for Exercise 8
+=======
+				// **start of content added for Exercise 7
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				if (document.getElementById("pageSize").value !== "") {
           params.page_size = document.getElementById("pageSize").value;
         }
 				pageNumber = document.getElementById("pageNumber");
 				params.page_number = pageNumber.options[pageNumber.selectedIndex].value;
+<<<<<<< HEAD
 				// **end of content added for Exercise 8
+=======
+				// **end of content added for Exercise 7
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				
 				BCMAPI.search(params);
 			}
@@ -115,7 +137,11 @@
 				// output response 
 				document.getElementById("jsonResponse").innerHTML = JSON.stringify(jsonData,null,2);
 				
+<<<<<<< HEAD
 				// **start of content added for Exercise 8
+=======
+				// **start of content added for Exercise 7
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				var numberOfPages = Math.ceil(jsonData.total_count/jsonData.page_size);
 				// add page option elements for each page in returned data
 				for (var i = 1; i < numberOfPages; i++) {
@@ -125,7 +151,11 @@
 						pageNumber.add(option,null);
 					}
 				}
+<<<<<<< HEAD
 				// **end of content added for Exercise 8
+=======
+				// **end of content added for Exercise 7
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				
 			}
 		</script>

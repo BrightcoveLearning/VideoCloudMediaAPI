@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Media API Exercise 6</title>
+		<title>Media API Exercise 5</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 			body {margin : 20px;}
@@ -12,7 +12,11 @@
 	<body>
 		<h2>User Input Fields for Media API Search</h2>
     
+<<<<<<< HEAD
     <!-- **start of content added for Exercise 6 -->
+=======
+    <!-- **start of content added for Exercise 5 -->
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
     <h3>Search Input</h3>
     <p>Read token (to retrieve list of videos: <input name="yourReadToken" id="yourReadToken" type="text" size="100" value="WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw.."></p>
     <p>API Location: <input id="yourAPILocation" value="//api.brightcove.com/services/post" /></p>
@@ -33,12 +37,20 @@
     <pre><code id="jsonRequest1"></code></pre>
     <p>Below is the response from the Media API request:</p>
     <pre><code id="jsonResponse"></code></pre>
+<<<<<<< HEAD
     <!-- **end of content added for Exercise 6 -->
+=======
+    <!-- **end of content added for Exercise 5 -->
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
     
 		<!-- This is the script to modify for the exercise -->
 		<script type="text/javascript">
 			
+<<<<<<< HEAD
 			// **start of content added for Exercise 6
+=======
+			// **start of content added for Exercise 5
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 			var doSearchVideos = function() {
 				BCMAPI.token = document.getElementById("yourReadToken").value;
 				BCMAPI.callback = "BCL.onSearchResponse";
@@ -57,7 +69,11 @@
 					params.none = document.getElementById("none").value.split(",");
 				}
 				params.get_item_count = true;
+<<<<<<< HEAD
 				// **end of content added for Exercise 6
+=======
+				// **end of content added for Exercise 5
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				
 				BCMAPI.search(params);
 			}
@@ -72,14 +88,22 @@
 					"' >" + jsonData.items[i].name + "</option>";
 				}
 				
+<<<<<<< HEAD
 				// **start of content added for Exercise 6
+=======
+				// **start of content added for Exercise 5
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				// inject the video list into the video drop-down menu
 				document.getElementById("videoList").innerHTML = str;
 				// output request 
         document.getElementById("jsonRequest1").innerHTML = BCMAPI.request;
 				// output response 
 				document.getElementById("jsonResponse").innerHTML = JSON.stringify(jsonData,null,2);
+<<<<<<< HEAD
 				// **end of content added for Exercise 6
+=======
+				// **end of content added for Exercise 5
+>>>>>>> d10fa389b3ce51f0ad8c34861c59b7ae3f0a7fb5
 				
 			}
 		</script>
