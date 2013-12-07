@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.11, created on 2013-11-27 15:15:02
+<?php /* Smarty version Smarty-3.1.11, created on 2013-12-06 19:30:10
          compiled from "smarty/templates/seo_playlist.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:173809548952966ee6114416-61072665%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '48903717d00b093440b273b653d0fd79b4954828' => 
     array (
       0 => 'smarty/templates/seo_playlist.tpl',
-      1 => 1385137424,
+      1 => 1386373016,
       2 => 'file',
     ),
   ),
@@ -15,14 +15,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.11',
+  'unifunc' => 'content_52966ee63835c0_47997519',
   'variables' => 
   array (
     'videos' => 0,
     'video' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.11',
-  'unifunc' => 'content_52966ee63835c0_47997519',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_52966ee63835c0_47997519')) {function content_52966ee63835c0_47997519($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate ("header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 

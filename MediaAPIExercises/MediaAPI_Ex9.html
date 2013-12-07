@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Media API Exercise 8</title>
+		<title>Media API Exercise 9</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 			body {margin : 20px;}
@@ -44,7 +44,7 @@
     <p><button onclick="doSearchVideos()">Search for Videos</button></p>
     <br/>
     
-    <!-- **start of content added for Exercise 8 -->
+    <!-- **start of content added for Exercise 9 -->
     <h3>Update a Video</h3>
     <p><em>Note that Media API read methods are cached, so you will not see the changed properties reflected in the form for 5 minutes or more.</em></p>
     <p>Write Token: <input id="yourWriteToken" type="text" value="Jyiei-T0_tDMwct8bUns819VTkfvkt9iX2mnIfkc8GNnREmW2YTG6A.." size="100" /></p>
@@ -61,18 +61,18 @@
     	<p><button onclick="doUpdateVideo()">Update Video</button></p>
       <input type=hidden name="JSONView" id="JSONView" style="width:97%;padding:5px;border:1px #999 solid" />
     </form>
-    <!-- **end of content added for Exercise 8 -->
+    <!-- **end of content added for Exercise 9 -->
     
     <h3>Media API Response</h3>
     <p>Below is the request sent to the Media API service to retrieve videos:</p>
     <pre><code id="jsonRequest1"></code></pre>
     
-    <!-- **start of content added for Exercise 8 -->
+    <!-- **start of content added for Exercise 9 -->
     <p>Below is the request sent to the Media API service to update a video:</p>
     <pre><code id="jsonRequest2"></code></pre>
     <p>Below is the response from the Media API udpate request:</p>
     <iframe id="postFrame" name="postFrame" style="width:100%;border:none"></iframe>
-    <!-- **end of content added for Exercise 8 -->
+    <!-- **end of content added for Exercise 9 -->
     
     <p>Below is the response from the Media API request:</p>
     <pre><code id="jsonResponse"></code></pre>
@@ -81,11 +81,11 @@
     
 		<!-- This is the script to modify for the exercise -->
 		<script type="text/javascript">
-			// **start of content added for Exercise 8
+			// **start of content added for Exercise 9
 			var pageNumber,
 				videoData,
 				selected_id;
-			// **end of content added for Exercise 8
+			// **end of content added for Exercise 9
 			
 			var doSearchVideos = function() {
 				BCMAPI.token = document.getElementById("yourReadToken").value;
@@ -144,7 +144,7 @@
 						pageNumber.add(option,null);
 					}
 				}
-				// **start of content added for Exercise 8
+				// **start of content added for Exercise 9
 				// select the first video
 				onVideoSelect(0);
 			}
@@ -176,7 +176,7 @@
         form.JSONView.value  = JSON.stringify(json);
 				document.getElementById("jsonRequest2").innerHTML = JSON.stringify(json);
       }
-			// **end of content added for Exercise 8
+			// **end of content added for Exercise 9
 			
 		</script>
     
