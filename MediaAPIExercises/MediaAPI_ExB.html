@@ -1,0 +1,88 @@
+<html>
+<head>
+  <title>Media API: Exercise B</title>
+		<style type="text/css">
+			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8;}
+			legend {
+				color: #CF0050;
+			}
+		</style>
+
+</head>
+
+<body>
+	<h2>Update a Video using a Server-Side Media API Call</h2>
+  
+    <!-- Javascript Media API wrapper from opensource.brightcove.com -->
+		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
+				<!-- include handlebars.js templating system  -->
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+
+  <!-- Read method script -->
+  		<script type="text/javascript">
+			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
+			// namespace to keep all the "global" vars together
+			var BCL = {};
+			BCL.htmlTemplate = "<select id=\"videolist\" onChange=\"BCL.onVideoSelect(this.options.selectedIndex)\">{{#items}}<option value=\"{{id}}\">{{name}}</option>{{/items}}</select>";
+			BCMAPI.token = "WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw..";
+			BCMAPI.callback = "BCL.onSearchResponse";
+			BCL.params = {};
+			BCMAPI.search(BCL.params);
+			
+      // search response handler
+			BCL.onSearchResponse = function(jsonData) {
+			  console.log(jsonData);
+			  BCL.items = jsonData.items;
+        // populate the form
+				var template = Handlebars.compile(BCL.htmlTemplate);
+				var data = jsonData;
+        var results = template(data);
+				document.getElementById("videoSelector").innerHTML = results;
+			  BCL.onVideoSelect(0);
+			}
+			
+			// handler for video select
+			BCL.onVideoSelect = function(index) {
+				var video = BCL.items[index];
+				document.getElementById("id").value = video.id;
+				document.getElementById("shortDescription").value = video.shortDescription;
+				document.getElementById("name").value = video.name;
+			}
+		</script>
+
+  <!-- Write method script -->
+
+  <div style="font-weight:bold;font-size:24">
+    Media API Exercise: Update a Video
+  </div>
+  <p>Select the video to update</p>
+  <p><em>Note that Media API read methods are cached, so you will not see the changed properties reflected in the form for 5 minutes or more.</em></p>
+  <div id="videoSelector"></div>
+	<br/><br/>
+  <form action="MediaAPI_Ex10B_action.php" method="post" enctype="multipart/form-data" target="postFrame">
+   <table>
+    <tr>
+      <td style="width:30%">Video ID (read-only):</td>
+
+      <td style="width:100%"><input name="id" id="id" type="text" readonly="true" value=""></td>
+    </tr>
+    <tr>
+      <td style="width:30%">Video Name:</td>
+
+      <td style="width:100%"><input name="name" id="name" type="text" value=""></td>
+    </tr>
+
+    <tr>
+      <td>Short Description</td>
+
+      <td><input name="shortDescription" id="shortDescription" type="text" size="100" maxlength="250"></td>
+    </tr>
+  </table><br>
+  <button type="submit" value="Update Video">Update Video</button>
+  </form><br>
+    <fieldset>
+    <legend>Response:</legend> <iframe id="postFrame" name="postFrame" style="width:100%;border:none"></iframe>
+  </fieldset><br>
+
+</body>
+</html>
