@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE>
+<html lang="en">
 	<head>
 		<title>Media API Exercise 7</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -7,14 +7,14 @@
 			body {margin : 20px;}
 		</style>
     <!-- Javascript Media API wrapper from opensource.brightcove.com -->
-		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
+		<script type="text/javascript" src="bc-mapi.js"></script>
 	</head>
 	<body>
 		<h2>Media API Sort Fields</h2>
     
     <h3>Search Input</h3>
     <p>Read token (to retrieve list of videos: <input name="yourReadToken" id="yourReadToken" type="text" size="100" value="WDGO_XdKqXVJRVGtrNuGLxCYDNoR-SvA5yUqX2eE6KjgefOxRzQilw.."></p>
-    <p>API Location: <input id="yourAPILocation" value="//api.brightcove.com/services/post" /></p>
+    <p>API Location: <input id="yourAPILocation" value="//api.brightcove.com/services/library" /></p>
     <p>Return videos that have <code>all</code> of these terms:<br /><input name="all" id="all" type="text" size="100" ></p>
     <p>Return videos that have <code>any</code> of these terms:<br /><input name="any" id="any" type="text" size="100" ></p>
     <p>Return videos that have <code>none</code> of these terms:<br /><input name="none" id="none" type="text" size="100" value="private"></p> 
@@ -57,7 +57,6 @@
 		<script type="text/javascript">
 			var doSearchVideos = function() {
 				BCMAPI.token = document.getElementById("yourReadToken").value;
-				BCMAPI.callback = "BCL.onSearchResponse";
 				BCMAPI.callback = "onSearchResponse";
 				var params = {};
 				params.page_size = 10;
@@ -76,7 +75,7 @@
 				
 				// **start of content added for Exercise 7
 				var sortBy = document.getElementById("sortBy");
-      	var sortByOrder = document.getElementById("sortByOrder");
+        var sortByOrder = document.getElementById("sortByOrder");
 				params.sort_by = sortBy.options[sortBy.selectedIndex].value + ":" + sortByOrder.options[sortByOrder.selectedIndex].value;
 				// **end of content added for Exercise 7
 				

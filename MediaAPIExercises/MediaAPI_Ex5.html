@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE>
+<html lang="en">
 	<head>
 		<title>Media API Exercise 5</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -7,7 +7,7 @@
 			body {margin : 20px;}
 		</style>
     <!-- Javascript Media API wrapper from opensource.brightcove.com -->
-		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
+		<script type="text/javascript" src="bc-mapi.js"></script>
 	</head>
 	<body>
 		<h2>Limit the Media API Search Data Returned</h2>
@@ -24,7 +24,7 @@
 			
 			// **start of content added for Exercise 5
 			params.video_fields = "id,name,shortDescription";
-			//params.all = "tag:birds";
+			params.all = "tag:birds";
 			//params.all = "birds";
 			//params.any = ["birds","sea"];
 			//params.none = "birds";

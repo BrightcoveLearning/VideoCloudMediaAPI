@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Media API: Exercise B</title>
+  <title>Media API: Exercise A</title>
 		<style type="text/css">
 			body {font-family : Helvetica,Arial,sans-serif; color : #619FA8;}
 			legend {
@@ -14,12 +14,12 @@
 	<h2>Update a Video</h2>
   
     <!-- Javascript Media API wrapper from opensource.brightcove.com -->
-		<script type="text/javascript" src="//docs.brightcove.com/en/scripts/bc-mapi.js"></script>
-				<!-- include handlebars.js templating system  -->
-		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+		<script type="text/javascript" src="bc-mapi.js"></script>
+		<!-- include handlebars.js templating system  -->
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 
   <!-- Read method script -->
-  		<script type="text/javascript">
+    <script type="text/javascript">
 			// BCL Media API search maker -- adapted from JS-MAPI on opensource.brightcove.com
 			// namespace to keep all the "global" vars together
 			var BCL = {};
@@ -34,10 +34,10 @@
 			  console.log(jsonData);
 			  BCL.items = jsonData.items;
         // populate the form
-				var template = Handlebars.compile(BCL.htmlTemplate);
-				var data = jsonData;
+        var template = Handlebars.compile(BCL.htmlTemplate);
+        var data = jsonData;
         var results = template(data);
-				document.getElementById("videoSelector").innerHTML = results;
+        document.getElementById("videoSelector").innerHTML = results;
 			  BCL.onVideoSelect(0);
 			}
 			

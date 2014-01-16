@@ -40,7 +40,7 @@
 var BCMAPI = new function () {
 	this.token = "";
 	this.callback = "BCMAPI.flush";
-	this.url = "http://api.brightcove.com/services/library";
+	this.url = "//api.brightcove.com/services/library";
 	this.request = this.url;
 	this.calls = [
 		{ "command" : "find_all_videos", "def" : false },
