@@ -1,0 +1,14 @@
+{
+  "method":"update_video",
+  "params":{
+    "video":{
+      "id":"12345689001",
+      "shortDescription":"bird video",
+      "Name":"bluebird",
+      "startDate":1389981584000,
+      "endDate":null,
+      "tags":["bird"]
+    },
+    "token":"ZYMM1234569AABB.."
+  }
+}
