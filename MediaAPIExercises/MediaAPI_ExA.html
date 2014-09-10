@@ -15,7 +15,7 @@
   
     <!-- Javascript Media API wrapper from opensource.brightcove.com -->
 		<script type="text/javascript" src="bc-mapi.js"></script>
-				<!-- include handlebars.js templating system  -->
+		<!-- include handlebars.js templating system  -->
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 
   <!-- Read method script -->
@@ -35,10 +35,10 @@
 			  console.log(jsonData);
 			  BCL.items = jsonData.items;
         // populate the form
-              var template = Handlebars.compile(BCL.htmlTemplate);
-              var data = jsonData;
-              var results = template(data);
-              document.getElementById("videoSelector").innerHTML = results;
+				var template = Handlebars.compile(BCL.htmlTemplate);
+				var data = jsonData;
+				var results = template(data);
+				document.getElementById("videoSelector").innerHTML = results;
 			  BCL.onVideoSelect(0);
 			}
 			
